@@ -33,8 +33,7 @@ class Cmd:
                 try:
                     doc = getattr(self, method).__doc__
                     if doc:
-                        print(f"{name}\t\t:", end='')
-                        print(doc)
+                        print(f"{name:<15}: {doc}")
                 except AttributeError as e:
                     pass
 
@@ -119,11 +118,16 @@ class Cmdr:
     def onecmd(self, line: str):
         cmd, arg, line = self._parseline(line)
         if cmd:
-            try:
-                self._commands[cmd].execute(arg)
-            except KeyError:
-                self.stdout.write(f"Command {cmd} not found")
-                self.stdout.flush()
+            if cmd == 'help':
+                self.do_help(arg)
+            elif cmd == 'exit':
+                self.do_exit(arg)
+            else:
+                try:
+                    self._commands[cmd].execute(arg)
+                except KeyError:
+                    self.stdout.write(f"Command {cmd} not found")
+                    self.stdout.flush()
 
     @final
     def register(self, cmd: Cmd) -> None:
@@ -136,3 +140,12 @@ class Cmdr:
     @final
     def unregister(self, cmd: str) -> None:
         self._commands.pop(cmd)
+
+    def do_help(self, arg=None) -> None:
+        self.stdout.write("Registered commands:\n")
+        for cmd in self._commands.keys():
+            self.stdout.write(f"{cmd}\n")
+        self.stdout.flush()
+
+    def do_exit(self, arg=None) -> None:
+        pass

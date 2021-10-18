@@ -43,16 +43,6 @@ class HabPrompt(Cmdr):
         self._sock.shutdown(socket.SHUT_RDWR)
         self._sock.close()
 
-    def do_help(self, args):
-        """ show help """
-        print("Built-in commands:")
-        Cmd.do_help(self, args)
-
-        print("Registered commands:")
-        for module in self.commands.values():
-            Cmd.do_help(module, args)
-            #module.do_help(args)
-
     def preloop(self):
         print('''
                     ,~-.
