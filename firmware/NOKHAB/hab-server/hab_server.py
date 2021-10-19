@@ -1,3 +1,4 @@
+from os import name
 import socket
 import sys
 import threading
@@ -64,18 +65,24 @@ def service_connection(sock:socket.socket, address):
         sock.close()
         return False
 
-if __name__ == "__main__":
+def accept_connection():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind((HOST, PORT))
     s.listen(5)
     while True:
-        try:
-            client, address = s.accept()
-            client.settimeout(None)
-            thread = threading.Thread(target=service_connection, args=(client, address))
-            thread.daemon = True
-            thread.start()
-        except KeyboardInterrupt:
-            print('Exiting')
-            sys.exit(0)
+        client, address = s.accept()
+        _, port = address
+        client.settimeout(None)
+        threading.Thread(target=service_connection, args=(client, address), name='service_connection_'+str(port), daemon=True).start()
+
+if __name__ == "__main__":
+    thread = threading.Thread(target=accept_connection, name='accept_connection')
+    thread.daemon = True
+    thread.start()
+    sensor.start()
+    try:
+        thread.join()
+        sensor.join()
+    except KeyboardInterrupt:
+        sys.exit(0)

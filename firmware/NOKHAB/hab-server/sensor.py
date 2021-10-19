@@ -1,9 +1,13 @@
+import time
+
 from cmdr import Cmd
 from hab_logger import LoggerBase
 #from bmp388_sensor import BmpSensor
+from threading import Thread
 
-class Sensor(LoggerBase):
+class Sensor(LoggerBase, Thread):
     def __init__(self):
+        Thread.__init__(self, name='Sensor')
         LoggerBase.__init__(self, "SENSOR")
         self._bmp = None
         #self._bmp = BmpSensor()
@@ -11,6 +15,17 @@ class Sensor(LoggerBase):
     @property
     def bmp(self):
         return self._bmp
+
+    def _log_data(self):
+        self.info("Alt: ")
+        self.info("Temp: ")
+        self.info("Pressure: ")
+        #self.info(f"Alt: {self.bmp.get_altitude()}")
+
+    def run(self) -> None:
+        while True:
+            self._log_data()
+            time.sleep(10)
 
 class SensorCmd(Cmd):
 
