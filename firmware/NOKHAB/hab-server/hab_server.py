@@ -2,30 +2,11 @@ import socket
 import sys
 import threading
 
-from cmdr import Cmd, Cmdr
-#from bmp388_sensor import BmpSensor
+from cmdr import Cmdr
+from sensor import Sensor, SensorCmd
 
 HOST = '0.0.0.0'
 PORT = 1234
-
-class SensorCmd(Cmd):
-
-    def __init__(self, command: str) -> None:
-        Cmd.__init__(self, command)
-        #self.bmp = BmpSensor()
-
-    def do_altitude(self, args):
-        """ show altitude in [m] """
-        print("Altitude: {:6.4f} m".format(self.bmp.get_altitude()))
-
-    def do_temperature(self, args):
-        """ show temperature in [°C] """
-        print("Temperature: {:5.2f} °C".format(self.bmp.get_temperature()))
-
-    def do_pressure(self, args):
-        """ show pressure in [hPa] """
-        print("Pressure: {:6.4f} hPa".format(self.bmp.get_pressure()))
-
 
 class HabPrompt(Cmdr):
     prompt = 'hab> '
@@ -72,7 +53,8 @@ def service_connection(sock:socket.socket, address):
     try:
         print(address)
         p = HabPrompt(sock)
-        sensor_cmd = SensorCmd('sensor')
+        sensor = Sensor()
+        sensor_cmd = SensorCmd(sensor)
         p.register(sensor_cmd)
         p.cmdloop()
     except:
