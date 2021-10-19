@@ -8,6 +8,9 @@ from sensor import Sensor, SensorCmd
 HOST = '0.0.0.0'
 PORT = 1234
 
+sensor: Sensor = Sensor()
+sensor_cmd: SensorCmd = SensorCmd(sensor)
+
 class HabPrompt(Cmdr):
     prompt = 'hab> '
 
@@ -53,8 +56,6 @@ def service_connection(sock:socket.socket, address):
     try:
         print(address)
         p = HabPrompt(sock)
-        sensor = Sensor()
-        sensor_cmd = SensorCmd(sensor)
         p.register(sensor_cmd)
         p.cmdloop()
     except:
