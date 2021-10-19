@@ -3,7 +3,7 @@ import socket
 import sys
 import threading
 
-from hab_prompt import HabPrompt
+from hab_shell import HabShell
 from sensor import Sensor, SensorCmd
 from threading import Thread
 
@@ -21,14 +21,18 @@ def accept_connection():
     while True:
         client, address = s.accept()
         client.settimeout(None)
-        p = HabPrompt(client)
-        p.register(sensor_cmd)
-        p.start()
+        shell = HabShell(client)
+        shell.register(sensor_cmd)
+        #shell.register(gps_cmd)
+        #shell.register(rf_cmd)
+        shell.start()
 
 if __name__ == "__main__":
     thread = threading.Thread(target=accept_connection, name='accept_connection', daemon=False)
     thread.start()
     sensor.start()
+    #gps.start()
+    #rf.start()
     try:
         thread.join()
         sensor.join()

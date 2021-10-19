@@ -4,7 +4,7 @@ import sys
 from cmdr import Cmdr
 from threading import Thread
 
-class HabPrompt(Cmdr, Thread):
+class HabShell(Cmdr, Thread):
     prompt = 'hab> '
 
     def __init__(self, sock:socket.socket):
@@ -16,7 +16,7 @@ class HabPrompt(Cmdr, Thread):
 
     def do_exit(self, args):
         """ exit HAB shell """
-        print("Thank you for flying HAB airlines", flush=True)
+        self.postloop()
         self._sock.shutdown(socket.SHUT_RDWR)
         self._sock.close()
 
@@ -43,7 +43,7 @@ class HabPrompt(Cmdr, Thread):
         print("Welcome to the HAB shell")
 
     def postloop(self):
-        print("Thank you for flying HAB airlines")
+        print("Thank you for flying HAB airlines", flush=True)
 
     def run(self) -> None:
         try:
