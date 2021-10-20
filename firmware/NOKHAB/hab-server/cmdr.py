@@ -121,7 +121,7 @@ class Cmdr:
             if cmd == 'help':
                 self.do_help(arg)
             elif cmd == 'exit':
-                self.do_exit(arg)
+                return self.do_exit(arg)
             else:
                 try:
                     self._commands[cmd].execute(arg)
@@ -148,4 +148,4 @@ class Cmdr:
         self.stdout.flush()
 
     def do_exit(self, arg=None) -> None:
-        pass
+        return True

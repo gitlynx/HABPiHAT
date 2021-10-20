@@ -14,12 +14,6 @@ class HabShell(Cmdr, Thread):
         sys.stdout = sock_file
         Thread.__init__(self, name='HabPrompt', daemon=True)
 
-    def do_exit(self, args):
-        """ exit HAB shell """
-        self.postloop()
-        self._sock.shutdown(socket.SHUT_RDWR)
-        self._sock.close()
-
     def preloop(self):
         print('''
                     ,~-.
@@ -51,4 +45,5 @@ class HabShell(Cmdr, Thread):
         except:
             pass
         finally:
+            self._sock.shutdown(socket.SHUT_RDWR)
             self._sock.close()

@@ -23,6 +23,7 @@ class Sensor(LoggerBase, Thread):
         #self.info(f"Alt: {self.bmp.get_altitude()}")
 
     def run(self) -> None:
+        self.info("Sensor logging started")
         while True:
             self._log_data()
             time.sleep(10)
