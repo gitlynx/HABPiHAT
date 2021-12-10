@@ -1,4 +1,6 @@
-from os import name
+"""
+HAB server application
+"""
 import socket
 import sys
 import threading
@@ -6,7 +8,6 @@ import threading
 from hab_logger import LoggerBase
 from hab_shell import HabShell
 from sensor import Sensor, SensorCmd
-from threading import Thread
 
 HOST = '0.0.0.0'
 PORT = 1234
@@ -16,13 +17,15 @@ sensor_cmd: SensorCmd = SensorCmd(sensor)
 logger: LoggerBase = LoggerBase('SERVER')
 
 def accept_connection():
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind((HOST, PORT))
-    s.listen(5)
+    ''' Accept network connections for HAB shell '''
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.bind((HOST, PORT))
+    sock.listen(5)
     logger.info(f"Accepting shell connections on host {HOST}:{PORT}")
     while True:
-        client, address = s.accept()
+        client, address = sock.accept()
         client.settimeout(None)
         logger.info(f"New connection from {address[0]}:{address[1]}")
         shell = HabShell(client)

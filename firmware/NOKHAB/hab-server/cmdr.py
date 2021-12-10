@@ -1,14 +1,19 @@
-import string, sys
+"""
+Simple framework to implement line-oriented command interpreter
+"""
+import sys
 from typing import Dict, List, Tuple, final
 
 PROMPT = '(Cmdr) '
 
 class Cmd:
+    """ Command base class """
 
     def __init__(self, command: str) -> None:
         self._command = command
 
     def get_name(self) -> str:
+        """ Get command name """
         return self._command
 
     def _get_methods(self) -> List:
@@ -17,15 +22,15 @@ class Cmd:
 
     @final
     def do_help(self, arg=None) -> None:
-        """ this is help doc """ 
+        ''' List available subcommands with "help" or detailed help with "help subcmd" '''
         if arg:
             try:
                 doc = getattr(self, self._get_methods()[arg]).__doc__
                 if doc:
                     print(doc)
-            except KeyError as e:
+            except KeyError as _:
                 print(f"Command {self.get_name()} has no subcommand '{arg}'")
-            except AttributeError as e:
+            except AttributeError as _:
                 pass
         else:
             print(f"Command {self.get_name()} has the following subcommands:")
@@ -34,35 +39,38 @@ class Cmd:
                     doc = getattr(self, method).__doc__
                     if doc:
                         print(f"{name:<15}: {doc}")
-                except AttributeError as e:
+                except AttributeError as _:
                     pass
 
     @final
     def execute(self, arg=None) -> None:
+        """ Template method to execute (sub)command """
         if not arg:
             return self.do()
-        else:
-            args = None
-            tokens = arg.split()
-            subcmd = tokens[0]
-            if len(tokens) > 1:
-                args = ' '.join(tokens[1:])
 
-            if subcmd == '-':
-                return self.do(args)
-            else:
-                func = getattr(self, self._get_methods()[subcmd])
-                return func(args)
+        args = None
+        tokens = arg.split()
+        subcmd = tokens[0]
+        if len(tokens) > 1:
+            args = ' '.join(tokens[1:])
 
-    def do(self, arg=None) -> None:
+        if subcmd == '-':
+            return self.do(args)
+
+        func = getattr(self, self._get_methods()[subcmd])
+        return func(args)
+
+    def do(self, arg=None) -> None: # pylint: disable=invalid-name
+        """ Base do method should be overridden in command subclasses """
         self.do_help(arg)
 
 class Cmdr:
+    """ Command base shell class """
     prompt = PROMPT
 
     def __init__(self, stdin=None, stdout=None) -> None:
-        self._commands: Dict[str, Cmd] = dict()
-        
+        self._commands: Dict[str, Cmd] = {}
+
         if stdin is not None:
             self.stdin = stdin
         else:
@@ -71,41 +79,55 @@ class Cmdr:
             self.stdout = stdout
         else:
             self.stdout = sys.stdout
-    
+
     @final
-    def cmdloop(self, intro=None):
+    def cmdloop(self, intro=None): # pylint: disable=unused-argument
+        """ Template method to show prompt, accept and parse input, and execute commands """
         self.preloop()
         stop = None
         while not stop:
             self.stdout.write(self.prompt)
             self.stdout.flush()
             line = self.stdin.readline()
-            if not len(line):
+            if len(line.strip()) == 0:
                 line = 'EOF'
             else:
                 line = line.rstrip('\r\n')
-            
+
             line = self.precmd(line)
             stop = self.onecmd(line)
             stop = self.postcmd(stop, line)
         self.postloop()
 
-    def precmd(self, line: str):
+    def precmd(self, line: str): # pylint: disable=no-self-use
+        ''' Hook method executed once when the cmdloop() method is called '''
         return line
 
-    def postcmd(self, stop, line: str):
+    def postcmd(self, stop, line: str): # pylint: disable=no-self-use, unused-argument
+        ''' Hook method executed just after a command has finished '''
         return stop
 
     def preloop(self):
-        pass
+        '''
+        Hook method executed just before the command line is interpreted,
+        but after the input prompt is generated and issued.
+        '''
 
     def postloop(self):
-        pass
+        '''
+        Hook method executed once when the cmdloop() method is about
+        to return
+        '''
 
-    def _parseline(self, line: str) -> Tuple[str, str, str]:
+    @staticmethod
+    def _parseline(line: str) -> Tuple[str, str, str]:
+        '''
+        Parse the line into a command name and a string containing
+        the arguments. Returns a tuple containing (cmd, args, line).
+        '''
         cmd, arg = None, None
         line = line.strip()
-        
+
         tokens = line.split()
         if len(tokens) > 0:
             cmd = tokens[0]
@@ -115,8 +137,9 @@ class Cmdr:
         return cmd, arg, line
 
     @final
-    def onecmd(self, line: str):
-        cmd, arg, line = self._parseline(line)
+    def onecmd(self, line: str): # pylint: disable=inconsistent-return-statements
+        ''' Accept and parse line input '''
+        cmd, arg, line = Cmdr._parseline(line)
         if cmd:
             if cmd == 'help':
                 self.do_help(arg)
@@ -131,21 +154,21 @@ class Cmdr:
 
     @final
     def register(self, cmd: Cmd) -> None:
+        ''' Register a command to the command shell '''
         self._commands[cmd.get_name()] = cmd
-    
+
     @final
     def unregister(self, cmd: Cmd) -> None:
+        ''' Unregister a command from the command shell '''
         self._commands.pop(cmd.get_name())
 
-    @final
-    def unregister(self, cmd: str) -> None:
-        self._commands.pop(cmd)
-
-    def do_help(self, arg=None) -> None:
+    def do_help(self, arg=None) -> None: # pylint: disable=unused-argument
+        """ List registered commands """
         self.stdout.write("Registered commands:\n")
-        for cmd in self._commands.keys():
+        for cmd in self._commands:
             self.stdout.write(f"{cmd}\n")
         self.stdout.flush()
 
-    def do_exit(self, arg=None) -> None:
+    def do_exit(self, arg=None) -> None: # pylint: disable=no-self-use, unused-argument
+        ''' Exit the command shell '''
         return True

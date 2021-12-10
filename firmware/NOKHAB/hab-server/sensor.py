@@ -1,11 +1,16 @@
+'''
+Pressure Sensor module
+'''
 import time
 
+from threading import Thread
 from cmdr import Cmd
 from hab_logger import LoggerBase
 #from bmp388_sensor import BmpSensor
-from threading import Thread
 
 class Sensor(LoggerBase, Thread):
+    ''' Sensor class '''
+
     def __init__(self):
         Thread.__init__(self, name='Sensor')
         LoggerBase.__init__(self, "SENSOR")
@@ -14,6 +19,7 @@ class Sensor(LoggerBase, Thread):
 
     @property
     def bmp(self):
+        ''' Get bmp sensor instance '''
         return self._bmp
 
     def _log_data(self):
@@ -29,6 +35,10 @@ class Sensor(LoggerBase, Thread):
             time.sleep(10)
 
 class SensorCmd(Cmd):
+    '''
+    Derived command class to access the pressure sensor
+    from the command shell
+    '''
 
     def __init__(self, sensor: Sensor) -> None:
         Cmd.__init__(self, 'sensor')
@@ -36,16 +46,17 @@ class SensorCmd(Cmd):
 
     @property
     def bmp(self):
+        ''' Get bmp sensor instance '''
         return self._sensor.bmp
 
-    def do_altitude(self, args):
+    def do_altitude(self, args): # pylint: disable=unused-argument
         """ show altitude in [m] """
-        print("Altitude: {:6.4f} m".format(self.bmp.get_altitude()))
+        print(f"Altitude: {self.bmp.get_altitude():6.4f} m")
 
-    def do_temperature(self, args):
+    def do_temperature(self, args): # pylint: disable=unused-argument
         """ show temperature in [°C] """
-        print("Temperature: {:5.2f} °C".format(self.bmp.get_temperature()))
+        print(f"Temperature: {self.bmp.get_temperature():5.2f} °C")
 
-    def do_pressure(self, args):
+    def do_pressure(self, args): # pylint: disable=unused-argument
         """ show pressure in [hPa] """
-        print("Pressure: {:6.4f} hPa".format(self.bmp.get_pressure()))
+        print(f"Pressure: {self.bmp.get_pressure():6.4f} hPa")

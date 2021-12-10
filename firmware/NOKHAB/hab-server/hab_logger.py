@@ -1,11 +1,11 @@
-#
-#   Experimenting Logging
-#
-#
+'''
+Experimental logging module
+'''
 import logging
 logging.basicConfig(level=logging.NOTSET)
 
 class LoggerBase:
+    ''' Base Logger class '''
     def __init__(self, module):
         self.filename = 'example.log'
         self.logger = logging.getLogger(module)
@@ -22,37 +22,17 @@ class LoggerBase:
         self.logger.addHandler(f_handler)
 
     def debug(self, msg):
+        ''' Log debug level message '''
         self.logger.debug(msg)
 
     def info(self, msg):
+        ''' Log info level message '''
         self.logger.info(msg)
 
     def warning(self, msg):
+        ''' Log warning level message '''
         self.logger.warning(msg)
 
     def error(self, msg):
+        ''' Log error level message '''
         self.logger.error(msg)
-
-"""
-class loggerGPS(loggerBase):
-    def __init__(self):
-        loggerBase.__init__(self, "GPS")
-
-
-class loggerRF(loggerBase):
-    def __init__(self):
-        loggerBase.__init__(self, 'RF')
-
-
-if __name__ == "__main__":
-    GPS = loggerGPS()
-    RF = loggerRF()
-
-    GPS.info("GPS Locked")
-    GPS.warning("NO satellites")
-    GPS.debug("Debug")
-    GPS.error("Error")
-
-    RF.error("Radio Not available")
-    RF.info("Wat is er fout met info")
-"""

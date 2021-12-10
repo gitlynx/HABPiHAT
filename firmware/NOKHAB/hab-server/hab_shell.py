@@ -1,10 +1,14 @@
+'''
+Hab Shell Module
+'''
 import socket
 import sys
 
-from cmdr import Cmdr
 from threading import Thread
+from cmdr import Cmdr
 
 class HabShell(Cmdr, Thread):
+    ''' Hab Shell command line interpreter '''
     prompt = 'hab> '
 
     def __init__(self, sock:socket.socket):
@@ -15,7 +19,7 @@ class HabShell(Cmdr, Thread):
         Thread.__init__(self, name='HabPrompt', daemon=True)
 
     def preloop(self):
-        print('''
+        print(r'''
                     ,~-.
                    (  ' )-.          ,~'`-.
                 ,~' `  ' ) )       _(   _) )
@@ -32,7 +36,7 @@ class HabShell(Cmdr, Thread):
             ( ` ')  ) [VVVVV]
            (_(_.~~~'   \|_|/
                        [XXX]
-                       `"""' 
+                       `"""'
         ''')
         print("Welcome to the HAB shell")
 
@@ -42,7 +46,7 @@ class HabShell(Cmdr, Thread):
     def run(self) -> None:
         try:
             self.cmdloop()
-        except:
+        except: # pylint: disable=bare-except
             pass
         finally:
             self._sock.shutdown(socket.SHUT_RDWR)
