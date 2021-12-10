@@ -1,3 +1,5 @@
+![Pylint](https://github.com/krisbellemans/HABPiHAT/actions/workflows/pylint.yml/badge.svg)
+
 # HABPiHAT
 High Altitude Ballon (HAB) Raspberry Pi HAT SW/HW/Documentation
 
