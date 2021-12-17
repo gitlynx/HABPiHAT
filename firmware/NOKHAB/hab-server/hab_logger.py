@@ -4,11 +4,11 @@ Experimental logging module
 import logging
 logging.basicConfig(level=logging.NOTSET)
 
-class LoggerBase:
+class BaseLogger:
     ''' Base Logger class '''
     def __init__(self, module):
         self.filename = 'example.log'
-        self.logger = logging.getLogger(module)
+        self._logger = logging.getLogger(module)
 
         # Create Handlers
         f_handler = logging.FileHandler(self.filename)
@@ -19,20 +19,20 @@ class LoggerBase:
         f_handler.setFormatter(f_format)
 
         # Add handlers to the logger
-        self.logger.addHandler(f_handler)
+        self._logger.addHandler(f_handler)
 
-    def debug(self, msg):
+    def log_debug(self, msg):
         ''' Log debug level message '''
-        self.logger.debug(msg)
+        self._logger.debug(msg)
 
-    def info(self, msg):
+    def log_info(self, msg):
         ''' Log info level message '''
-        self.logger.info(msg)
+        self._logger.info(msg)
 
-    def warning(self, msg):
+    def log_warning(self, msg):
         ''' Log warning level message '''
-        self.logger.warning(msg)
+        self._logger.warning(msg)
 
-    def error(self, msg):
+    def log_error(self, msg):
         ''' Log error level message '''
-        self.logger.error(msg)
+        self._logger.error(msg)
