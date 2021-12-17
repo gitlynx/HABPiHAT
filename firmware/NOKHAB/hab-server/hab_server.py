@@ -4,7 +4,9 @@ HAB server application
 import socket
 import sys
 import threading
+import time
 
+from hab_experiment import HabExperiment
 from hab_logger import BaseLogger
 from hab_shell import HabShell
 from sensor import Sensor, SensorCmd
@@ -41,8 +43,17 @@ if __name__ == "__main__":
     sensor.start()
     #gps.start()
     #rf.start()
+    experiment1 = HabExperiment("Experiment 1")
+    experiment2 = HabExperiment("Experiment 2")
     try:
+        while True:
+            experiment1.do_work()
+            experiment2.do_work()
+            time.sleep(1)
+
+    except KeyboardInterrupt:
         thread.join()
         sensor.join()
-    except KeyboardInterrupt:
+        experiment1.__del__()
+        experiment2.__del__()
         sys.exit(0)
