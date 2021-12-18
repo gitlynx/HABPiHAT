@@ -16,17 +16,31 @@ class Sensor(BaseLogger, Thread):
         BaseLogger.__init__(self, "Sensor")
         self._bmp = None
         #self._bmp = BmpSensor()
+        self._altitude = 0
+        self._temperature = 0
+        self._pressure = 0
 
     @property
-    def bmp(self):
-        ''' Get bmp sensor instance '''
-        return self._bmp
+    def altitude(self):
+        ''' Get altitude '''
+        return self._altitude
+
+    @property
+    def temperature(self):
+        ''' Get temperature '''
+        return self._temperature
+
+    @property
+    def pressure(self):
+        ''' Get pressure '''
+        return self._pressure
 
     def _log_data(self):
         self.log_info("Alt: ")
         self.log_info("Temp: ")
         self.log_info("Pressure: ")
-        #self.log_info(f"Alt: {self.bmp.get_altitude()}")
+        #self._altitude = self._bmp.get_altitude()
+        #self.log_info(f"Alt: {self._altitude}")
 
     def run(self) -> None:
         self.log_info("Sensor logging started")
@@ -44,19 +58,14 @@ class SensorCmd(Cmd):
         Cmd.__init__(self, 'sensor')
         self._sensor = sensor
 
-    @property
-    def bmp(self):
-        ''' Get bmp sensor instance '''
-        return self._sensor.bmp
-
     def do_altitude(self, args): # pylint: disable=unused-argument
         """ show altitude in [m] """
-        print(f"Altitude: {self.bmp.get_altitude():6.4f} m")
+        print(f"Altitude: {self._sensor.altitude:6.4f} m")
 
     def do_temperature(self, args): # pylint: disable=unused-argument
         """ show temperature in [°C] """
-        print(f"Temperature: {self.bmp.get_temperature():5.2f} °C")
+        print(f"Temperature: {self._sensor.temperature:5.2f} °C")
 
     def do_pressure(self, args): # pylint: disable=unused-argument
         """ show pressure in [hPa] """
-        print(f"Pressure: {self.bmp.get_pressure():6.4f} hPa")
+        print(f"Pressure: {self._sensor.pressure:6.4f} hPa")
