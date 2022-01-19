@@ -1,0 +1,60 @@
+pcm.hat {
+	type hw
+	card 0
+	device 0
+}
+
+pcm_slave.ins {
+	pcm "hw:0,1"
+	rate 44100
+	channels 2
+}
+
+pcm.input1 {
+	name 'input 1'
+	type plug
+	slave.pcm {
+		type dsnoop
+		ipc_key 12342
+		slave ins
+		bindings.0 0
+	}
+}
+
+pcm.input2 {
+	name 'input 2'
+	type plug
+	slave.pcm {
+		type dsnoop
+		ipc_key 12342
+		slave ins
+		bindings.0 1
+	}
+}
+
+pcm_slave.outs {
+	pcm "hw:0,0"
+	rate 44100
+	channels 2
+}
+
+pcm.out0 {
+	type plug
+	slave.pcm {
+		type dshare
+		ipc_key 4242
+		slave outs
+		bindings.0 0
+	}
+}
+
+pcm.out1 {
+	type plug
+	slave.pcm {
+		type dshare
+		ipc_key 4242
+		slave outs
+		bindings.0 1
+	}
+}
+ 
