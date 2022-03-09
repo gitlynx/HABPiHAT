@@ -1,1 +1,2 @@
 adafruit-circuitpython-bmp3xx
+pyyaml
