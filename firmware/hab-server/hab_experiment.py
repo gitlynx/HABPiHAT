@@ -4,11 +4,15 @@ Communication interface with project experiments
 import time
 from serial import Serial, SerialException
 from hab_logger import BaseLogger
+from hab_config import HabExperimentConfig as config
 
 class HabExperiment:
     """ Class for serial communication with project experiment """
 
-    def __init__(self, name, read_interval=5, port=None, baudrate=115200):
+    def __init__(self, name):
+        port = config[name]["PORT"] or "/dev/ttyS0"
+        baudrate = config[name]["BAUDRATE"] or 115200
+        read_interval = config[name]["READ_INTERVAL"] or 5
         self.logger = BaseLogger(name)
         self.serial = Serial(port, baudrate)
         self.is_enabled = False

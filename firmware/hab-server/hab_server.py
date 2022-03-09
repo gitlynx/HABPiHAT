@@ -9,10 +9,11 @@ import time
 from hab_experiment import HabExperiment
 from hab_logger import BaseLogger
 from hab_shell import HabShell
+from hab_config import HabShellConfig
 from sensor import Sensor, SensorCmd
 
-HOST = '0.0.0.0'
-PORT = 1234
+HOST = HabShellConfig['HOST'] or '0.0.0.0'
+PORT = HabShellConfig['PORT'] or 1234
 
 sensor: Sensor = Sensor()
 sensor_cmd: SensorCmd = SensorCmd(sensor)
@@ -43,8 +44,8 @@ if __name__ == "__main__":
     sensor.start()
     #gps.start()
     #rf.start()
-    experiment1 = HabExperiment("Experiment 1")
-    experiment2 = HabExperiment("Experiment 2")
+    experiment1 = HabExperiment("EXPERIMENT1")
+    experiment2 = HabExperiment("EXPERIMENT2")
     try:
         while True:
             experiment1.do_work()
