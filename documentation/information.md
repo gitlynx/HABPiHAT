@@ -1,4 +1,6 @@
 # HAB information and useful links
+[ High Altitude Balloon ](https://www.instructables.com/SSTV-CAPSULE-FOR-HIGH-ALTITUDE-BALLOONS/)
+
 
 # Firmware
 ## Tiny Core Linux
@@ -32,6 +34,7 @@
 	[Direwolf info](https://packet-radio.net/direwolf/)
 	[Direwolf on Raspberry Pi](https://github.com/wb2osz/direwolf/blob/master/doc/Raspberry-Pi-APRS.pdf)
 	[Direwolf user guide](https://github.com/wb2osz/direwolf/blob/master/doc/User-Guide.pdf)
+	[ Direwolf manual ](https://packet-radio.net/wp-content/uploads/2018/10/Direwolf-User-Guide.pdf)
 
 # GPSD
 	https://en.wikipedia.org/wiki/Gpsd
@@ -126,3 +129,10 @@ https://alsa.opensrc.org/Dmix
 	- LiFe Battery (expected to perform better at low temperature)
 
 
+# Hardware
+## Oscilator
+[ Oscilator debugging ](https://www.nxp.com/docs/en/application-note/AN3208.pdf)
+
+## Radio modules
+[ HAMRadioShop (Poland) ](https://www.hamradioshop.pl/pl/kity-radiowe-moduly/modul-nadawczo-odbiorczy-dra818v-na-pasmo-vhf-detail.html)
+[ HAM Radio (Slovenia) ](https://english.svet-el.si/)
