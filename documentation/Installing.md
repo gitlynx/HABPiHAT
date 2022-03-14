@@ -83,3 +83,15 @@ and updates/installs it when necessary.
 
 Installing python in a venv environment
  - Direwolf provides a KISS interfaces. 
+
+
+## HAB application
+There are several ways to install the HAB application on the Target machine.
+
+- During Development
+  - `git clone git+ssh://<username>@<hostname or IP address>:<path to repository on host machine>`
+
+- Deploying
+  - Download zip file
+  - Extract
+  - Run at least the setup part so that all required python modules get installed.
