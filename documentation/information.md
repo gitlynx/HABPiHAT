@@ -55,7 +55,7 @@
 
 # GPIO
 ## Controlling GPIO
-	https://opensource.com/article/17/3/operate-relays-control-gpio-pins-raspberry-pi (PHP)
+	~https://opensource.com/article/17/3/operate-relays-control-gpio-pins-raspberry-pi (PHP)~
 	https://www.raspberrypi.org/documentation/usage/gpio/
 	https://www.raspberrypi.org/documentation/usage/gpio/python/README.md
 		https://pypi.org/project/pigpio/
