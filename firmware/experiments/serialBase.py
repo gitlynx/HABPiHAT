@@ -58,8 +58,6 @@ class GPSData:
     def __init__(self):
         self.string = None
 
-    def set
-
 def parseGPS(str):
     if str.find('GGA') > 0:
         msg = pynmea2.parse(str)
@@ -70,10 +68,10 @@ def parseGPS(str):
 # ################ #
 
 if __name__ == "__main__":
-    settings = PortSettings(baudrate='9600', device='/dev/ttyACM0')
+    settings = PortSettings(baudrate='9600', device='/dev/ttyUSB1')
     print("Settings: {}, {}".format(settings.baudrate, settings.device))
 
-    ser = serial.Serial(settings.device, settings.baudrate, timeout=1)
+    ser = serial.Serial(settings.device, settings.baudrate, timeout=0.25)
     sio = io.TextIOWrapper(io.BufferedRWPair(ser, ser))
 
     while(True):
