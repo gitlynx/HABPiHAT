@@ -1,0 +1,21 @@
+SHELL:
+  HOST: 0.0.0.0
+  PORT: 1234
+
+LOG:
+  FILE: hab.log
+  LEVEL: DEBUG
+
+SENSOR:
+  CALIBRATION: 0
+
+EXPERIMENT:
+  EXPERIMENT1:
+      BAUDRATE: 115200
+      PORT: /dev/ttyS0
+      READ_INTERVAL: 5 # in [s]
+
+  EXPERIMENT2:
+      BAUDRATE: 115200
+      PORT: /dev/ttyS1
+      READ_INTERVAL: 5 # in [s]

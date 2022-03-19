@@ -1,4 +1,5 @@
 adafruit-circuitpython-bmp3xx
+pyYAML
 python-periphery==2.3.0
 pyserial
 kiss

@@ -2,17 +2,19 @@
 Experimental logging module
 '''
 import logging
+from hab_config import HabLogConfig as config
+
 logging.basicConfig(level=logging.NOTSET)
 
 class BaseLogger:
     ''' Base Logger class '''
     def __init__(self, module):
-        self.filename = 'example.log'
+        self.filename = config["FILE"] or 'hab.log'
         self._logger = logging.getLogger(module)
 
         # Create Handlers
         f_handler = logging.FileHandler(self.filename)
-        f_handler.setLevel('INFO')
+        f_handler.setLevel(config["LEVEL"] or 'INFO')
 
         # Create Formatter and add it to handler
         f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')

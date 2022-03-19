@@ -4,12 +4,16 @@ Communication interface with project experiments
 import time
 from serial import Serial, SerialException
 from hab_logger import BaseLogger
+from hab_config import HabExperimentConfig as config
 
-class HabExperiment(BaseLogger):
+class HabExperiment:
     """ Class for serial communication with project experiment """
 
-    def __init__(self, name, read_interval=5, port=None, baudrate=115200):
-        super().__init__(name)
+    def __init__(self, name):
+        port = config[name]["PORT"] or "/dev/ttyS0"
+        baudrate = config[name]["BAUDRATE"] or 115200
+        read_interval = config[name]["READ_INTERVAL"] or 5
+        self.logger = BaseLogger(name)
         self.serial = Serial(port, baudrate)
         self.is_enabled = False
         self.read_interval = read_interval
@@ -24,14 +28,14 @@ class HabExperiment(BaseLogger):
         """ Open serial port """
         try:
             self.serial.open()
-            self.log_info("Connection opened")
+            self.logger.log_info("Connection opened")
         except SerialException:
             pass
 
     def close(self):
         """ Close serial port """
         self.serial.close()
-        self.log_info("Connection closed")
+        self.logger.log_info("Connection closed")
 
     def _send_command(self, cmd: str):
         """ Send command to serial port """
@@ -48,20 +52,20 @@ class HabExperiment(BaseLogger):
         self._send_command("enable")
         response = self._read_data()
         self.is_enabled = response == 'OK'
-        self.log_info(f"Enabled: {response}")
+        self.logger.log_info(f"Enabled: {response}")
 
     def disable(self):
         """ Send disable command """
         self._send_command("disable")
         response = self._read_data()
         self.is_enabled = not response == 'OK'
-        self.log_info(f"Disabled: {response}")
+        self.logger.log_info(f"Disabled: {response}")
 
     def reset(self):
         """ Send reset command """
         self._send_command("reset")
         response = self._read_data()
-        self.log_info(f"Reset: {response}")
+        self.logger.log_info(f"Reset: {response}")
 
     def do_work(self):
         """ Periodically read data from experiment """
