@@ -1,0 +1,62 @@
+###########################################################
+#                                                         #
+#              Minimal Direwolf Config File               #
+#                                                         #
+#                       RPi Version                       #
+#                                                         #
+###########################################################
+
+###########################################################
+# Audio Device Config                                     #
+###########################################################
+#  Use output of 'aplay -L' and 'aplay -l'
+
+
+ADEVICE plughw:1,0 
+ACHANNELS 1
+
+
+###########################################################
+# Channel 0 Properties                                    #
+###########################################################
+# The following MYCALL, MODEM, PTT, etch configuration items
+# apply to the most reset CHANNEL 
+#
+
+CHANNEL 0
+
+MYCALL ABCDE-0
+MODEM 1200
+# PTT /dev/ttySCx RTS
+
+
+###########################################################
+# Virtual TNC Server Properties                           #
+###########################################################
+
+# Direwolf acts as a virtual TNC and can communicate with 
+# client applications by different protocols 
+#
+#	- the 'AWG TCPIP Socket Interface' - default port 8000
+#	- KISS protocol over TCP Socket - default port 8001
+#	- KISS TNC via pseudo terminal - (-p commandline option)
+
+KISSPORT 8001
+
+
+###########################################################
+# Beaconing Properties                                    #
+###########################################################
+#
+# Beaconing is configured with these two commands:
+#
+#	PBEACON		- for a position report (usually yourself)
+#	OBEACON		- for an object report (usually some other entity)
+#
+# Each has a series of keywords and values for options.  
+# See User Guide for details.
+#
+
+# example: 
+# PBEACON delay=1  every=2 overlay=S symbol="digi" lat=42^37.14N long=071^20.83W power=50 height=20 gain=4 comment="Chelmsford MA" via=WIDE1-1,WIDE2-1 
+
