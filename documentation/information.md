@@ -140,3 +140,14 @@ https://alsa.opensrc.org/Dmix
 ## Radio modules
 [ HAMRadioShop (Poland) ](https://www.hamradioshop.pl/pl/kity-radiowe-moduly/modul-nadawczo-odbiorczy-dra818v-na-pasmo-vhf-detail.html)
 [ HAM Radio (Slovenia) ](https://english.svet-el.si/)
+
+
+
+# Tips and Tricks
+## GIT
+### Git clone over ssh
+  e.g. git clone ssh://jan@192.168.1.64:/home/jan/projects/HAM-HAB/HABPiHAT/.git
+  ! git push to be done to a non-bare repo will not succeed if the branch you want to push is checked out on remote
+
+## Direwolf
+- [ Example Direwolf config ](https://godseyonline.net/raspberry-pi-direwolf-digipeater-igate-soundcard-version/)

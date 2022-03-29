@@ -60,3 +60,4 @@ KISSPORT 8001
 # example: 
 # PBEACON delay=1  every=2 overlay=S symbol="digi" lat=42^37.14N long=071^20.83W power=50 height=20 gain=4 comment="Chelmsford MA" via=WIDE1-1,WIDE2-1 
 
+CBEACON dest=MORSE-10 delay=2 every=15 info="ON0NOK-11"
