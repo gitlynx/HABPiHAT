@@ -5,8 +5,8 @@ from operator import xor
 from time import sleep
 
 
-DEVICE = '/dev/ttyUSB1'
-BAUD = '9600'
+DEVICE = '/dev/ttySC0'
+BAUD = '115200'
 
 
 
@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
     if arg_namespace.server:
         print("Server")
-        server('9600', '/dev/ttyUSB0', arg_namespace.host, arg_namespace.port)
+        server(BAUD, DEVICE, arg_namespace.host, arg_namespace.port)
     elif arg_namespace.client:
         print("Client")
         client(arg_namespace.host, arg_namespace.port)
