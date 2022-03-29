@@ -6,7 +6,8 @@
   - Install image on Micro SD Card
   - Create an empty file 'ssh' on the 'boot' partition
 
-## Disable onboard sound system
+## Sound Card
+### Disable onboard sound system
   - Make the following changes to config.txt on the 'boot' partition
   - Comment the following lines
 ```
@@ -18,7 +19,7 @@
     #dtoverlay=audioinjector-wm8731-audio
 ```
 
-## Installing Sound Card (WM8731 Codec) (Only if you're building a system with the HAMPiHat board)
+### Installing Sound Card (WM8731 Codec) (Only if you're building a system with the HAMPiHat board)
   - Make the following changes to config.txt on the 'boot' partition
   - Uncomment or add the following lines
 ```
@@ -29,7 +30,7 @@
     dtoverlay=rpi-proto
 ```
 
-## Create Alsa Sound Config file
+### Create Alsa Sound Config file
   - Create a file './.asoundrc' in '/home/pi' containing the following
   - update 'card' number to point to the right sound card. (use output of 'aplay -l' for the card numbers)
 ```
@@ -45,9 +46,16 @@ ctl.!default {
 ```
   - This will make the desired soundcard the default
 
-## Tools to check Sound Card functionality
+### Tools to check Sound Card functionality
   - apt install alsaplayer-text
   - This can be used to play an audio file to verify sound card functionality
+
+
+## Serial interfaces
+2 SC16SI752 chips provide 2x2 additional Serial ports
+  - Add following lines to /boot/config.txt to enable these extra serial ports
+    - dtoverlay=sc16is752-i2c,int_pin=25,addr=0x4E
+    - dtoverlay=sc16is752-i2c,int_pin=24,addr=0x4F
 
 
 # HAB System
@@ -63,6 +71,13 @@ ctl.!default {
 ### Config file (Ballon setup)
 - This config file myst be tailored for use in the balloon
 
+## SSTV
+Uses the Raspberry Pi Camera to capture a high res image which is then downscaled to SSTV size and provided
+with necessary information (CALL sign and some metrics)
+
+### installing required packets
+- sudo apt install imagemagick
+  - convert tool
 
 ## Python
 ### Python packets on base system

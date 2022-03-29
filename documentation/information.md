@@ -67,6 +67,10 @@
 	[Dual UART with I²C-Bus/SPI Interface](https://www.nxp.com/products/peripherals-and-logic/signal-chain/bridges/dual-uart-with-ic-bus-spi-interface-64-bs-of-transmit-and-receive-fifos-irda-sir-built-in-support:SC16IS752_SC16IS762)
 	https://github.com/aauer1/RPI-RS232 (SPI connection)
 
+#### Waveshare I2C SC16SI752 expanders
+- Add following line to config.txt
+  dtoverlay=sc16is752-i2c,int_pin=24,addr=0x48
+
 #### Linux Kernel
 	Raspberry Pi contains device tree overlays for this chip. with programmable I2C addresses and dedicated interrupt line.
 	<add info here>
