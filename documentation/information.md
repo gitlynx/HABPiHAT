@@ -67,6 +67,10 @@
 	[Dual UART with I²C-Bus/SPI Interface](https://www.nxp.com/products/peripherals-and-logic/signal-chain/bridges/dual-uart-with-ic-bus-spi-interface-64-bs-of-transmit-and-receive-fifos-irda-sir-built-in-support:SC16IS752_SC16IS762)
 	https://github.com/aauer1/RPI-RS232 (SPI connection)
 
+#### Waveshare I2C SC16SI752 expanders
+- Add following line to config.txt
+  dtoverlay=sc16is752-i2c,int_pin=24,addr=0x48
+
 #### Linux Kernel
 	Raspberry Pi contains device tree overlays for this chip. with programmable I2C addresses and dedicated interrupt line.
 	<add info here>
@@ -136,3 +140,14 @@ https://alsa.opensrc.org/Dmix
 ## Radio modules
 [ HAMRadioShop (Poland) ](https://www.hamradioshop.pl/pl/kity-radiowe-moduly/modul-nadawczo-odbiorczy-dra818v-na-pasmo-vhf-detail.html)
 [ HAM Radio (Slovenia) ](https://english.svet-el.si/)
+
+
+
+# Tips and Tricks
+## GIT
+### Git clone over ssh
+  e.g. git clone ssh://jan@192.168.1.64:/home/jan/projects/HAM-HAB/HABPiHAT/.git
+  ! git push to be done to a non-bare repo will not succeed if the branch you want to push is checked out on remote
+
+## Direwolf
+- [ Example Direwolf config ](https://godseyonline.net/raspberry-pi-direwolf-digipeater-igate-soundcard-version/)
