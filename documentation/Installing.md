@@ -1,5 +1,8 @@
 % Installing HAB Raspberry Pi
 
+# Ground Stations System
+  - [HTTPS Post system](https://www.codexpedia.com/python/python-web-server-for-get-and-post-requests/)
+
 # Installing Base system
 ## Installing Raspberry Pi Lite Image (Buster)
   - [Raspberry Pi Lite](https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2022-01-28/2022-01-28-raspios-bullseye-armhf-lite.zip)
@@ -59,6 +62,27 @@ ctl.!default {
 
 
 # HAB System
+## GPSD
+  - sudo apt install gpsd
+  - python module https://pypi.org/project/gps3/
+  - https://gpsd.gitlab.io/gpsd/gpsd_json.html
+  - https://gpsd.gitlab.io/gpsd/installation.html
+  - GPS datalogger https://www.instructables.com/Raspberry-Pi-3-GPS-Data-Logger/
+
+### Configuring
+  - See serial port mapping to find interface the GPS is connected to
+  - config file is /etc/default/gpsd
+  - [ Configuration option info ](https://gpsd.gitlab.io/gpsd/gpsd.html)
+
+
+## PiJuice
+  - The Python module is part of the debian install package. This need to be installed manually when 
+    Preparing the final build
+  - Can be used to retrieve nice battery statistics
+  - links 
+    - [ Hardware ](https://github.com/PiSupply/PiJuice/tree/master/Hardware)
+    - [ Software ](https://github.com/PiSupply/PiJuice/tree/master/Software)
+
 ## Direwolf
 ### Install
  - sudo apt install direwolf

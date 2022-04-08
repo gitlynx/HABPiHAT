@@ -18,13 +18,10 @@ if [ ! "${REQUIREMENTS_HASH}" = "${EXISTING_REQUIREMENTS_HASH}" ]; then
 	echo -n "${REQUIREMENTS_HASH}" > ${VENV_DIR}/requirements.md5
 fi
 
-<<<<<<< HEAD
-=======
 # Set environment variables
 export HAB_CONFIG=./hab_config.yml
 
->>>>>>> main
 # Run program
-CMD="./${VENV_DIR}/bin/python hab_server.py"
+CMD="./${VENV_DIR}/bin/python base_station.py"
 
-exec ${CMD}
+exec ${CMD} $@

@@ -1,7 +1,14 @@
 adafruit-circuitpython-bmp3xx
+<<<<<<< HEAD
+python-periphery==2.3.0
+pyserial
+kiss
+gpsdclient
+=======
 pyYAML
 python-periphery==2.3.0
 pyserial
 kiss
+>>>>>>> main
 git+https://github.com/gitlynx/kiss.git#egg=kiss
 git+https://github.com/jj1bdx/aprs-python#egg=aprs

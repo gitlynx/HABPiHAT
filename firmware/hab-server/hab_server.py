@@ -11,6 +11,7 @@ from hab_logger import BaseLogger
 from hab_shell import HabShell
 from hab_config import HabShellConfig
 from sensor import Sensor, SensorCmd
+from hab_gps import Gps, GpsCmd
 
 HOST = HabShellConfig['HOST'] or '0.0.0.0'
 PORT = HabShellConfig['PORT'] or 1234
@@ -18,6 +19,9 @@ PORT = HabShellConfig['PORT'] or 1234
 sensor: Sensor = Sensor()
 sensor_cmd: SensorCmd = SensorCmd(sensor)
 logger: BaseLogger = BaseLogger('Hab server')
+
+gps: Gps = Gps(BaseLogger('GPS'))
+gps_cmd: GpsCmd = GpsCmd(gps)
 
 def accept_connection():
     ''' Accept network connections for HAB shell '''
@@ -42,7 +46,7 @@ if __name__ == "__main__":
     thread = threading.Thread(target=accept_connection, name='accept_connection', daemon=False)
     thread.start()
     sensor.start()
-    #gps.start()
+    gps.start()
     #rf.start()
     experiment1 = HabExperiment("EXPERIMENT1")
     experiment2 = HabExperiment("EXPERIMENT2")
@@ -55,6 +59,7 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         thread.join()
         sensor.join()
+        gps.join()
         experiment1.__del__()
         experiment2.__del__()
         sys.exit(0)
