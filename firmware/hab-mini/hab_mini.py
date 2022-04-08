@@ -36,11 +36,16 @@ def client(host: str = None, port: str=None):
         Receives from Direwolf via KISS
     '''
     modem = direwolf_io.Direwolf(host, port, 'ON4NOK', "ON3JCO-11")
+
+    import pdb
+    pdb.set_trace()
+
     modem.install_read_callback(printer)
 
+    print("DO I start the loop?")
+
     while True:
-        sleep(1)
-        pass
+        sleep(1) 
     pass
 
 
