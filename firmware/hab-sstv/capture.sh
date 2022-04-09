@@ -31,14 +31,12 @@ WIDTH=0
 HEIGHT=0
 
 LATEST_FILE="latest.jpeg"
-LATEST_SSTV="sstv.jpeg"
+LATEST_SSTV="sstv.png"
 
 capture_high_res()
 {
 	local filename=$1
 	local storedir=$(dirname $1)
-
-	echo "\n\t$storedir\n\n"
 
 	IMAGE_OPTION="--width ${WIDTH} --height ${HEIGHT}"
 	FILENAME="-o $1"
@@ -62,8 +60,6 @@ convert_to_sstv()
 	local text="\"${_text[@]}\""
 
 	echo "Convert to SSTV format"
-	echo "text: $text"
-	echo "arg 1: $1"
 
 	# Common options
 	INPUT_FILE=${SSTVFOLDER}${LATEST_FILE}
@@ -96,7 +92,7 @@ add_to_log()
 	
 	echo "Add to LOG"
 	# Real Filename
-	imagefile=$(basename $(readlink ${SSTVFOLDER}/latest.jpeg))
+	imagefile=$(basename $(readlink ${SSTVFOLDER}/${LATEST_FILE}))
 
 	# Add newest conversion to log file
 	if [ ! -e ${SSTVFOLDER} ] ; then
@@ -110,10 +106,36 @@ convert_to_wav()
 {
 	# Convert latest image to wave file
 	echo "Converting to WAV"
+
+	
+	INPUT_SSTV=${SSTVFOLDER}${LATEST_SSTV}
+	OUTPUT_WAV=/tmp/latest.wav
+
+
+	PYTHON_EXEC=${PYTHON_EXEC:-python3}
+	VENV_DIR=${VENV_DIR:-venv}
+
+	# Update VENV if it changed or does not exist
+	REQUIREMENTS_HASH=$(md5sum requirements.txt)
+	EXISTING_REQUIREMENTS_HASH=$(cat ${VENV_DIR}/requirements.md5 2>/dev/null || true)
+
+	if [ ! "${REQUIREMENTS_HASH}" = "${EXISTING_REQUIREMENTS_HASH}" ]; then
+		PYTHON_V=$(${PYTHON_EXEC} version-check.py)
+		${PYTHON_EXEC} -m venv ${VENV_DIR}
+		./${VENV_DIR}/bin/pip install --upgrade pip setuptools
+		./${VENV_DIR}/bin/pip install -r requirements.txt
+		echo -n "${REQUIREMENTS_HASH}" > ${VENV_DIR}/requirements.md5
+	fi
+
+	SSTV_MODE="Robot36"
+
+	CMD="./${VENV_DIR}/bin/python -m pysstv --mode ${SSTV_MODE} ${INPUT_SSTV} ${OUTPUT_WAV}"
+
+	echo "--> ${CMD}"
+	exec ${CMD}
+
 }
 
-
-# Main part of script
 ALTITUDE="${1} m"
 
 echo "ALT: $ALTITUDE"
