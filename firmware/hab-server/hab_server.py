@@ -12,6 +12,7 @@ from hab_shell import HabShell
 from hab_config import HabShellConfig
 from sensor import Sensor, SensorCmd
 from hab_gps import Gps, GpsCmd
+from hab_mixer import Mixer, MixerCmd
 
 HOST = HabShellConfig['HOST'] or '0.0.0.0'
 PORT = HabShellConfig['PORT'] or 1234
@@ -22,6 +23,9 @@ logger: BaseLogger = BaseLogger('Hab server')
 
 gps: Gps = Gps(BaseLogger('GPS'))
 gps_cmd: GpsCmd = GpsCmd(gps)
+
+mixer: Mixer = Mixer(BaseLogger('Mixer'))
+mixer_cmd: MixerCmd = MixerCmd(mixer)
 
 def accept_connection():
     ''' Accept network connections for HAB shell '''
@@ -37,7 +41,8 @@ def accept_connection():
         logger.log_info(f"New connection from {address[0]}:{address[1]}")
         shell = HabShell(client)
         shell.register(sensor_cmd)
-        #shell.register(gps_cmd)
+        shell.register(gps_cmd)
+        shell.register(mixer_cmd)
         #shell.register(rf_cmd)
         shell.start()
 
@@ -47,6 +52,7 @@ if __name__ == "__main__":
     thread.start()
     sensor.start()
     gps.start()
+    mixer.start()
     #rf.start()
     experiment1 = HabExperiment("EXPERIMENT1")
     experiment2 = HabExperiment("EXPERIMENT2")
@@ -60,6 +66,7 @@ if __name__ == "__main__":
         thread.join()
         sensor.join()
         gps.join()
+        mixer.join()
         experiment1.__del__()
         experiment2.__del__()
         sys.exit(0)
