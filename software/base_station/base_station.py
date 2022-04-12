@@ -14,6 +14,9 @@ import queue
 from threading import Thread
 import helpers.direwolf_interface as direwolf_io
 
+from endpoints import endpoints
+from http_post import post_results
+
 message_queue = queue.Queue()
 
 def push_message(line:str):
@@ -21,7 +24,10 @@ def push_message(line:str):
         Direwolf read callback function
     """
     print(line)
-
+    keys = ['pressure', 'temperature', 'lightsensor', 'uvsensor', 'geigercounter', 'battery', 'percentage', 'status']
+    data = line.rstrip('<0x0a>').split(":")[1].split(",")
+    values = {k: v for k, v in zip(keys, data)}
+    post_results(endpoints, values)
 
 def base_station(host: str=None, port: str=None):
     """

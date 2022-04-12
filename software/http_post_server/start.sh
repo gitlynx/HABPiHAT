@@ -22,6 +22,6 @@ fi
 export HAB_CONFIG=./hab_config.yml
 
 # Run program
-CMD="./${VENV_DIR}/bin/python ./${VENV_DIR}/lib/python3.8/site-packages/pyserv/server.py 8080"
+CMD="./${VENV_DIR}/bin/python ./${VENV_DIR}/lib/python3.9/site-packages/pyserv/server.py 8080"
 
 exec ${CMD}
