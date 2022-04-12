@@ -29,6 +29,7 @@
     - Serial A
       - Device name: /dev/ttySC0
       - Peripheral: GPS
+      - default baudrate: 9600
     - Serial B
       - Device name: /dev/ttySC1
       - Peripheral: DRA818 (Radio)
