@@ -90,7 +90,7 @@
 	Known under different part numbers. All do share the same requirements.
 	- analog AF interface for sending and recieving
 	- serial interface for configuring radio
-
+	- [ Python control for DRA818 ](https://github.com/chokelive/dra818v_RPi)
 
 ## APRS device
 	http://www.picoaprs.de/index_en.html 
