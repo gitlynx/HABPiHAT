@@ -11,6 +11,7 @@
 
 import argparse
 import queue
+import loggerBase
 from threading import Thread
 import helpers.direwolf_interface as direwolf_io
 
@@ -18,12 +19,14 @@ from endpoints import endpoints
 from http_post import post_results
 
 message_queue = queue.Queue()
+logger = loggerBase.loggerBase("BaseStation")
 
 def push_message(line:str):
     """
         Direwolf read callback function
     """
     print(line)
+    logger.info(line)
     keys = ['pressure', 'temperature', 'lightsensor', 'uvsensor', 'geigercounter', 'battery', 'percentage', 'status']
     data = line.rstrip('<0x0a>').split(":")[1].split(",")
     values = {k: v for k, v in zip(keys, data)}
