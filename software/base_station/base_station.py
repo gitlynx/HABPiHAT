@@ -20,13 +20,8 @@ def push_message(line:str):
     """
         Direwolf read callback function
     """
-    message_queue.put(line)
+    print(line)
 
-
-def pop_message():
-    data = message_queue.get(timeout=1)
-    if data is not None:
-        print(data)
 
 def base_station(host: str=None, port: str=None):
     """
@@ -39,9 +34,7 @@ def base_station(host: str=None, port: str=None):
     """
         Process receives messages
     """
-    while True:
-        pop_message()
-
+    print("We should not come here")
 
 def argumentparsing():
     '''
