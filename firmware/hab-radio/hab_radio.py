@@ -1,3 +1,4 @@
+from re import I
 import serial
 from time import sleep
 
@@ -51,6 +52,15 @@ class DRA818():
                 print(f"{a}: NOK {line}")
             sleep(1)
         sleep(0.5)
+
+    def PTT(self, enable: bool = False):
+        self.serial.rts = enable
+
+    def control(self, enable):
+        if enable:
+            self.serial.open()
+        else:
+            self.serial.close()
 
     def configRadio(self):
         # Reopen
