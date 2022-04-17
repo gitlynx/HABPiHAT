@@ -37,11 +37,10 @@ class SSTV:
         self.subproc.poll()
         return self.subproc.returncode
 
-    def _subprocess_spawn(self, process_cmd, shell=False):
+    def _subprocess_spawn(self, process_cmd):
         self.subproc = subprocess.Popen(process_cmd,
-                shell = shell)
-#                stdout=subprocess.DEVNULL,
-#                stderr=subprocess.DEVNULL)
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL)
 
     def _radio_enable(self, enable: bool):
         if self.radio is not None:
@@ -93,7 +92,6 @@ class SSTV:
             self._subprocess_spawn(["./capture.sh", self.altitude])
             self._timeout = time() + self.TIMEOUT_CAPTURE
             self.state = self.CAPTURING
-            print("Start Capture")
 
         elif self.state == self.CAPTURING:
 
@@ -118,8 +116,6 @@ class SSTV:
                 self._subprocess_spawn(["./play.sh"])
                 self.state = self.TRANSMITTING
                 self._timeout = time() + self.TIMEOUT_TRANSMIT
-                print("Start Transmit")
-                print(f"arguments: {self.subproc.args}")
             else:
                 self.state = self.IDLE
 
