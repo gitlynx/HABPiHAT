@@ -11,7 +11,7 @@
 
 # Shell config
 
-SSTVFOLDER="/tmp/"
+SSTVFOLDER="/home/pi/telemetrydata/sstv/"
 
 #########################################
 ## DO NOT MAKE CHANGES BELOW THIS LINE ##
@@ -41,10 +41,9 @@ capture_high_res()
 	IMAGE_OPTION="--width ${WIDTH} --height ${HEIGHT}"
 	FILENAME="-o $1"
 	LATEST="--latest ${SSTVFOLDER}${LATEST_FILE}"
-	EXIF="--exif GPS.GPSLatitude=51.111"
 
 
-	libcamera-still -t 10000 -n ${IMAGE_OPTIONS} ${FILENAME} ${LATEST} ${EXIF} 
+	libcamera-still -t 10000 -n ${IMAGE_OPTIONS} ${FILENAME} ${LATEST}
 }
 
 add_exif_info()
