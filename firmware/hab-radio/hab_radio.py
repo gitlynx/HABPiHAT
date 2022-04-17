@@ -14,46 +14,61 @@ class DRA818():
     def __init__(self, port: str):
         self.port = port
         self.serial = serial.Serial(
-                port=port, 
+                port=None, 
                 baudrate=self.DRA818BAUD,
                 parity=serial.PARITY_NONE,
                 stopbits=serial.STOPBITS_ONE,
                 bytesize=serial.EIGHTBITS,
+                rtscts=False,
+                dsrdtr=False,
                 timeout=0.5)
+
+        self.serial.port = self.port
+        self.serial.rts=False
+        self.serial.open()
+
+        sleep(0.5)
         
     def __del__(self):
         if self.serial:
             self.serial.close()
             self.serial = None
 
+    def _reopen(self):
+        self.serial.close()
+        sleep(1)
+        self.serial.open()
+
+    def _writeConfig(self, line: bytes):
+        # Write command
+        for a in range(3):
+            self.serial.write(line)
+            _response = bytes(self.serial.readline())
+            if b"DMOERROR" not in _response:
+                print(f"{a}: OK  {line}")
+                break
+            else:
+                print(f"{a}: NOK {line}")
+            sleep(1)
+        sleep(0.5)
+
     def configRadio(self):
-
+        # Reopen
+        self._reopen()
         # Connect
-        self.serial.write(b"AT+DMOCONNECT\r\n") 
-        _response = bytes(self.serial.readline())
-        print(f"Connect: {_response}")
-
+        self._writeConfig(b"AT+DMOCONNECT\r\n")
         # Set Volume
-        self.serial.write(b"AT+DMOSETVOLUME=%d\r\n" % (self.VOLUMN))
-        _response = self.serial.readline()
-        print(f"Volume: {_response}")
-
+        self._writeConfig(b"AT+DMOSETVOLUME=%d\r\n" % (self.VOLUMN))
         # Set filter
-        self.serial.write(b"AT+SETFILTER=0,0,0\r\n")
-        _response = self.serial.readline()
-        print(f"Filter: {_response}")
-
+        self._writeConfig(b"AT+SETFILTER=0,0,0\r\n")
         # Program Radio
-        self.serial.write(b"AT+DMOSETGROUP=%d,%3.4f,%3.4f,%s,%d,%s\r\n" % (
+        self._writeConfig(b"AT+DMOSETGROUP=%d,%3.4f,%3.4f,%s,%d,%s\r\n" % (
             self.MODE, 
             self.TXFREQUENCY, 
             self.RXFREQUENCY, 
             self.CTCSS, 
             self.SQUELCH, 
             self.CTCSS))
-        _response = self.serial.readline()
-        print(f"Program: {_response}")
-
 
 if __name__ == "__main__":
     radio = DRA818("/dev/ttySC3")
