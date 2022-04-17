@@ -12,7 +12,7 @@
 #  Use output of 'aplay -L' and 'aplay -l'
 
 
-ADEVICE plughw:2,0 
+ADEVICE plughw:1,0
 ACHANNELS 1
 
 
