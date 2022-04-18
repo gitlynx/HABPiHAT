@@ -1,0 +1,5 @@
+pyYAML
+python-periphery==2.3.0
+pyserial
+git+https://github.com/gitlynx/kiss.git#egg=kiss
+aprs

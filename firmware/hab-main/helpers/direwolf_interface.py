@@ -7,11 +7,8 @@ class Direwolf():
         self.destination = destination
         self.kiss_connection = kiss.TCPKISS(host=host, port=port)
         self.kiss_connection.start()
-        pass
 
-    def __del__(self):
-        self.kiss_connection.stop()
-        self.kiss_connection = None
+        pass
 
     def write(self, info: str):
         '''
