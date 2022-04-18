@@ -26,7 +26,6 @@ class DRA818():
 
         self.serial.port = self.port
         self.serial.rts=False
-        self.serial.open()
 
         sleep(0.5)
         
@@ -79,6 +78,7 @@ class DRA818():
             self.CTCSS, 
             self.SQUELCH, 
             self.CTCSS))
+        self.serial.close()
 
 if __name__ == "__main__":
     radio = DRA818("/dev/ttySC3")
