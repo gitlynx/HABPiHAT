@@ -36,9 +36,12 @@ def post_results(endpoints: list, data: dict):
         'value8': data.get('status', 'undefined') 
     }    
     for endpoint in endpoints:
-        postdata['apikey'] = endpoint['apikey']
-        r = requests.post(url=endpoint['url'], data = postdata)
-        print(f"Post response: {r.text}")
+        postdata['api_key'] = endpoint['apikey']
+        try:
+            r = requests.post(url=endpoint['url'], data = postdata)
+            print(f"Post response: {r.text}")
+        except:
+            print(f"Post to endpoint {endpoint['url']} failed")
 
 
 
