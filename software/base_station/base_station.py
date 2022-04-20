@@ -27,7 +27,7 @@ def push_message(line:str):
     """
     print(line)
     logger.info(line)
-    keys = ['pressure', 'temperature', 'lightsensor', 'uvsensor', 'geigercounter', 'battery', 'percentage', 'status']
+    keys = ['status', 'temperature', 'pressure', 'uvsensor', 'lightsensor', 'geigercounter', 'battery', 'percentage']
     data = line.rstrip('<0x0a>').split(":")[1].split(",")
     values = {k: v for k, v in zip(keys, data)}
     post_results(endpoints, values)

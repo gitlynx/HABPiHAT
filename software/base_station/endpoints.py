@@ -4,5 +4,7 @@ endpoints = [
         { 'url': "https://www.highaltitudeballoon.be/post-data.php", 'apikey':"tPmAT5Ab3j7F9"},
         { 'url': "https://www.highaltitudeballoon.be/balloonlk/post-data.php", 'apikey':"tPmAT5Ab3j7F9"},
         { 'url': "http://weerballon2.gip-heilig-graf.be/esp-post-data.php", 'apikey': "tPmAT5Ab3j7F9"}, # Jurn
-        { 'url': "http://weerballon1.gip-heilig-graf.be/", 'apikey': "tPmAT5Ab3j7F9"} # Robbe
+        { 'url': "http://weerballon1.gip-heilig-graf.be/", 'apikey': "tPmAT5Ab3j7F9"}, # Robbe
+        { 'url': "http://weerballon4.gip-heilig-graf.be/default.php", 'apikey': "tPmAT5Ab3j7F9"}, # Team Milan De Ridder
+        { 'url': "http://weerballon3.gip-heilig-graf.be/home.php", 'apikey': "tPmAT5Ab3j7F9"}  # Team Stijn
 ]
