@@ -28,7 +28,8 @@ CHANNEL 0
 MYCALL ON4NOK-11
 MODEM 1200
 PTT /dev/ttySC3 RTS
-
+TXDELAY 5
+TXTAIL 5
 
 ###########################################################
 # Virtual TNC Server Properties                           #

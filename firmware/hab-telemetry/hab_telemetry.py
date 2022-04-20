@@ -1,7 +1,10 @@
 # Test program for subprocesses
 import helpers.serial_interface as ser_io
 import helpers.direwolf_interface as direwolf_io
+from pijuice import PiJuice, PiJuiceInterface
 from helpers.hab_radio import DRA818
+from gpsdclient import GPSDClient
+import logging
 import sys
 from os.path import exists
 from time import time, sleep
@@ -17,7 +20,7 @@ DATA_DEVICE = "/dev/ttySC2"
 RADIO_DEVICE = "/dev/ttySC3"
 BAUD = "115200"
 
-TELEMETRY_DURATION = 1 # in minutes
+TELEMETRY_DURATION = 2 # in minutes
 
 # CODE PART
 # Do Not Change Anything below this line
@@ -40,7 +43,8 @@ class Telemetry:
     TIMEOUT_CAPTURE = 40
     TIMEOUT_TRANSMIT = 60
 
-    TELEMETRY_TIMEOUT = 15
+# CHANGE THIS TO 75
+    TELEMETRY_TIMEOUT = 75
     TELEMETRY_DUMMY="0,0,0,0,0,0,0,0"
 
     def dbg_print(self, line: str):
@@ -57,6 +61,8 @@ class Telemetry:
         self.radio = self._radio_create(RADIO_DEVICE)   # DRA818 Object
         self.radio.configRadio()
         self.modem = None       # Direwolf Modem Object
+        self.ups = PiJuice()
+        self.gps = self._gps_setup()
         self.subproc = None     # Spawn a subprocess
         self.direwolfproc = None # Spawn Direwolf subprocess
         self._timeout = None
@@ -64,6 +70,13 @@ class Telemetry:
         self._data_timeout = time()
         self._altitude = "undefined"
         self.data_source = self._telemetry()
+
+        self._lat = "undefined"
+        self._lon = "undefined"
+        self._spd = "undefined"
+        self._date = "undefined"
+        self._speed = ""
+
 
         self._direwolf_killall()  
 
@@ -145,6 +158,50 @@ class Telemetry:
 #                stdout=subprocess.DEVNULL,
 #                stderr=subprocess.DEVNULL)
 
+    # UPS Functions
+    # #####################################################
+    def _ups(self):
+        if self.ups is not None:
+            # ChargeLevel
+            data = self.ups.status.GetChargeLevel()
+            charge_level = data['data'] if data['error'] == 'NO_ERROR' else "-1"
+
+            # Voltage
+            data = self.ups.status.GetBatteryVoltage()
+            voltage = data['data'] if data['error'] == 'NO_ERROR' else "-1"
+
+            # Temp
+            data = self.ups.status.GetBatteryVoltage()
+            temp = data['data'] if data['error'] == 'NO_ERROR' else "-1"
+
+        return f"{charge_level},{voltage},{temp}"
+
+
+    # GPS Functions
+    # #####################################################
+    def _gps_setup(self): 
+        gps_client = GPSDClient(host="127.0.0.1")
+        return gps_client.dict_stream(convert_datetime=True, filter=["TPV"])
+
+    def _gps_runner(self):
+        if self.gps is not None:
+            cnt = int(0)
+            for result in self.gps:
+                print (f"* {result['class']}")
+                if result['class'] == 'TPV':
+                    self._altitude = result.get("", "n/a")
+                    self._lon = result.get("lon", "n/a")
+                    self._lat = result.get("lat", "n/a")
+                    self._speed = result.get("speed", "n/a")
+                    break
+                cnt += 1
+                if cnt > 2:
+                    break
+
+    def _gps_data(self):
+        return f"{self._altitude},{self._lon},{self._lat},{self._speed},{self._date}"
+
+
     # TELEMETRY SOURCE FUNCTIONS
     # #####################################################
     def _telemetry(self):
@@ -181,7 +238,6 @@ class Telemetry:
     def _modem_write(self, line):
         self.dbg_print(f"Kom ik hier ({self.modem} | ({len(line)})" )
         if self.modem is not None and len(line):
-            self.dbg_print("Pass to here?")
             self.modem.write(line)
 
 
@@ -198,19 +254,29 @@ class Telemetry:
 
 
         # Common Code
+        # #############################
+        self._gps_runner()
+
+        # Experiment data
         if self.data_source is not None:
             line = self.data_source.readline()
             if len(line):
                 self.dbg_print(f"--> ({len(line)}){line}")
                 telemetry_data = line
-                self._data_timeout = time()
+                self._data_timeout = self._telemetry_timer_update()
             else:
                 telemetry_data = ""
 
         if self._telemetry_forced_update():
             telemetry_data = self.TELEMETRY_DUMMY
         
+        # If there's data
         if len(telemetry_data):
+            telemetry_data += "|UPS|"
+            telemetry_data += self._ups()
+            telemetry_data += "|GPS|"
+            telemetry_data += self._gps_data()
+
             self.dbg_print(f"data: {telemetry_data}")
 
 

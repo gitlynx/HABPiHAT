@@ -69,7 +69,7 @@ class DRA818():
         # Set Volume
         self._writeConfig(b"AT+DMOSETVOLUME=%d\r\n" % (self.VOLUMN))
         # Set filter
-        self._writeConfig(b"AT+SETFILTER=0,0,0\r\n")
+        self._writeConfig(b"AT+SETFILTER=1,1,1\r\n")
         # Program Radio
         self._writeConfig(b"AT+DMOSETGROUP=%d,%3.4f,%3.4f,%s,%d,%s\r\n" % (
             self.MODE, 

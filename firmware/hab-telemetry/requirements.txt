@@ -4,3 +4,5 @@ pyserial
 git+https://github.com/gitlynx/kiss.git#egg=kiss
 aprs
 PySSTV
+smbus
+gpsdclient
